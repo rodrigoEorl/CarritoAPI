@@ -25,23 +25,18 @@ public class CarritoService
 
     public void AgregarItem(AgregarItemCarritoRequest request)
     {
-        // 1. Obtener producto del catálogo
         var producto = _repositorioProductos.ObtenerPorId(request.ProductoId);
-        //var item = MapearADominio(request);
-        // 3. Mapear request → dominio
+
         var itemNuevo = MapearAItemCarrito(request);
 
-        // 2. Validar reglas de negocio
         ValidadorItemCarrito.Validar(producto, itemNuevo);
 
-
-        // 4. Persistir
         _repositorioCarrito.AgregarItem(itemNuevo);
     }
     public void ActualizarItem(AgregarItemCarritoRequest request)
     {
         var producto = _repositorioProductos.ObtenerPorId(request.ProductoId);
-        //var item = MapearADominio(request);
+
         var itemActualizado = MapearAItemCarrito(request);
 
         ValidadorItemCarrito.Validar(producto, itemActualizado);
