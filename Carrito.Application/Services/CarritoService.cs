@@ -52,10 +52,12 @@ public class CarritoService
 
     public void ActualizarCantidad(ActualizarCantidadRequest request)
     {
-        var item = _repositorioCarrito.ObtenerPorProductoId(request.ProductoId)
+        var itemOriginal = _repositorioCarrito.ObtenerPorProductoId(request.ProductoId)
             ?? throw new InvalidOperationException("Producto no existe en el carrito");
 
-        item.ActualizarCantidad(
+        var itemTemporal = itemOriginal.Clonar();
+
+        itemTemporal.ActualizarCantidad(
             request.GrupoId,
             request.OpcionId,
             request.Operacion
@@ -63,9 +65,9 @@ public class CarritoService
 
         var producto = _repositorioProductos.ObtenerPorId(request.ProductoId);
 
-        ValidadorItemCarrito.Validar(producto, item);
+        ValidadorItemCarrito.Validar(producto, itemTemporal);
 
-        _repositorioCarrito.ActualizarItem(item);
+        _repositorioCarrito.ActualizarItem(itemTemporal);
     }
 
 
@@ -102,4 +104,5 @@ public class CarritoService
 
         return item;
     }
+
 }

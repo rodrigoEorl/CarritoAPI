@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carrito.Domain.Catalogo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,29 @@ public class ItemCarrito
 
         opcion.CambiarCantidad(nuevaCantidad);
     }
+    public ItemCarrito Clonar()
+    {
+        var copia = new ItemCarrito { ProductoId = ProductoId };
+
+        foreach (var grupo in Selecciones)
+        {
+            var g = new SeleccionGrupo { GrupoId = grupo.GrupoId };
+
+            foreach (var opcion in grupo.Opciones)
+            {
+                g.AgregarOpcion(new SeleccionOpcion
+                {
+                    OpcionId = opcion.OpcionId,
+                    Cantidad = opcion.Cantidad
+                });
+            }
+
+            copia.AgregarSeleccion(g);
+        }
+
+        return copia;
+    }
+
 
 }
 
